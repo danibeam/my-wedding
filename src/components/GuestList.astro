@@ -1,0 +1,19 @@
+---
+import { turso } from "../lib/turso"
+import type { Guest } from "../types/types"
+
+const { rows } = await turso.execute('SELECT * FROM Guests') as unknown as { rows: Guest[] }
+---
+
+<div class="container py-4">
+    <h1>List of guests</h1>
+    <ul>
+        {
+            rows.map((row) => (
+                <li>
+                    <h2>{row.name}</h2>
+                </li>
+            ))
+        }
+    </ul>
+</div>

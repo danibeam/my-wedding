@@ -1,0 +1,16 @@
+---
+import { getGuestByToken } from "../../lib/fetch-guest";
+
+const { token } = Astro.params;
+const guest = await getGuestByToken(token);
+
+---
+
+<div>
+    <h1 class="text-2xl font-bold">¡Hola, {guest?.name ?? 'N/A'}</h1>
+    <p>Te esperamos el día de la boda 🎉</p>
+    
+    <p><strong>Mesa:</strong> </p>
+    <p><strong>Menú:</strong> </p>
+    <p><strong>Acompañantes:</strong> </p>
+</div>
