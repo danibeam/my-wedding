@@ -1,8 +1,22 @@
 ---
-import { getGuestByToken } from "../../lib/fetch-guest";
+import tokens from '../../data/tokens.json';
+import { getGuestByToken } from '../../lib/fetch-guest';
+
+
+export function getStaticPaths() {
+    return tokens.map((token) => ({ params: { token } }));
+}
 
 const { token } = Astro.params;
 const guest = await getGuestByToken(token);
+
+if(guest?.name === 'Noah') {
+    // TODO: poner Among us
+}
+
+if (!guest) {
+  throw Astro.redirect("/error");
+}
 
 ---
 

@@ -20,3 +20,15 @@ export async function getGuestByToken(
         return null;
     }
 }
+
+export async function getAllGuestTokens(): Promise<string[]> {
+    try {
+        const response = await turso.execute({
+            sql: `SELECT token FROM guests`,
+        });
+        return response.rows.map((row) => (row as unknown as { token: string }).token);
+    } catch (error) {
+        console.error("Error fetching guest tokens:", error);
+        return [];
+    }
+}
