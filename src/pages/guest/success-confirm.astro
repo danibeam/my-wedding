@@ -1,0 +1,47 @@
+---
+// src/pages/guest/successConfirm.astro
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout>
+  <div class="flex flex-col items-center text-center py-12 px-6">
+    <h1 class="mb-6">🎉 ¡Gracias por confirmar! 🎉</h1>
+    <p class="text-gray-700 mb-8">
+      Nos alegra mucho saber que contaremos contigo en este día tan especial. ¡Nos vemos en la boda!
+    </p>
+    <p class="text-gray-700 font-medium">Detalles de la celebración:</p>
+    <p class="text-gray-600 pl-4"><strong>📅 Fecha:</strong> <span class="font-medium">Sábado, 6 de Septiembre de 2025</span></p>
+    <p class="text-gray-600 pl-4"><strong>🏠 Ubicación:</strong> <span class="font-medium">Villa Ramona. Sant Joan d'Alacant</span></p>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <canvas id="confetti-canvas" class="w-full h-full"></canvas>
+    </div>
+  </div>
+
+  <script>
+    import confetti from 'https://cdn.skypack.dev/pin/canvas-confetti@v1.9.3-ZVXR27AiU3rMhLWbmiMx/mode=imports,min/optimized/canvas-confetti.js';
+
+    window.addEventListener('load', () => {
+      const duration = 3 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    });
+  </script>
+</Layout>

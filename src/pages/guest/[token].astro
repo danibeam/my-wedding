@@ -1,5 +1,6 @@
 ---
 import tokens from '../../data/tokens.json';
+import Layout from '../../layouts/Layout.astro';
 import { getGuestByToken } from '../../lib/fetch-guest';
 
 
@@ -10,21 +11,62 @@ export function getStaticPaths() {
 const { token } = Astro.params;
 const guest = await getGuestByToken(token);
 
-if(guest?.name === 'Noah') {
-    // TODO: poner Among us
-}
-
-if (!guest) {
-  throw Astro.redirect("/error");
+if(guest?.attendance == '1') {
+  return Astro.redirect("/guest/success-confirm");
 }
 
 ---
+<Layout>
+    <div class="bg-white rounded-2xl shadow-lg p-6 max-w-lg mx-auto mt-8">
+        <h1 class="handwritten text-2xl font-bold text-gray-800 mb-4">¡Hola, <span class="font-bold">{guest?.name ?? 'N/A'}</span>!</h1>
+        <p class="text-gray-600 mb-4">Nos hace muy feliz invitarte a nuestro enlace. <br>Te esperamos el día de la boda 🎉</p>
 
-<div>
-    <h1 class="text-2xl font-bold">¡Hola, {guest?.name ?? 'N/A'}</h1>
-    <p>Te esperamos el día de la boda 🎉</p>
+        <p class="text-gray-700 font-medium">Detalles de la celebración:</p>
+        <p class="text-gray-600 pl-4"><strong>📅 Fecha:</strong> <span class="font-medium">Sábado, 6 de Septiembre de 2025</span></p>
+        <p class="text-gray-600 pl-4"><strong>🏠 Ubicación:</strong> <span class="font-medium">Villa Ramona. Sant Joan d'Alacant</span></p>
     
-    <p><strong>Mesa:</strong> </p>
-    <p><strong>Menú:</strong> </p>
-    <p><strong>Acompañantes:</strong> </p>
-</div>
+        <hr class="border-gray-300 my-4">
+    
+        <p class="text-gray-600 mb-4">
+            Por favor, confirma tu asistencia a la boda haciendo click en el botón de abajo:
+            <br>
+            Si tienes alguna duda, no dudes en escribirnos!
+        </p>
+        <div class="flex justify-center">
+            <button id="confirmAssistanceBtn" data-guesttoken={guest?.token} class="bg-yellow-600 text-white font-semibold py-2 px-4 rounded hover:bg-yellow-700 transition">
+                Confirmar asistencia
+            </button>
+        </div>
+    </div>
+</Layout>
+
+<script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      const confirmBtn = document.getElementById("confirmAssistanceBtn");
+  
+      confirmBtn?.addEventListener("click", async () => {
+        const guestToken = confirmBtn.dataset.guesttoken;
+
+        try {
+            const res = await fetch("/api/confirm", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ guestToken }),
+            });
+
+            if (res.ok) {
+                window.location.href = "/guest/success-confirm";
+            } else {
+                alert("Hubo un error al confirmar la asistencia. Por favor, inténtalo más tarde o contacta con nosotros 😢");
+            }
+        } catch (err) {
+            console.error("Error en la solicitud: (Client layer)", err);
+            alert("Error de red. Intenta más tarde.");
+        }
+      });
+    });
+  </script>
+  
+  
