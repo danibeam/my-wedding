@@ -5,15 +5,34 @@ import type { Guest } from "../types/types"
 const { rows } = await turso.execute('SELECT * FROM Guests') as unknown as { rows: Guest[] }
 ---
 
-<div class="container py-4">
-    <h1>List of guests</h1>
-    <ul>
+<div class="container mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-6">Lista de invitados</h1>
+
+  <div class="overflow-x-auto bg-white shadow-xl rounded-xl">
+    <table class="min-w-full table-auto">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="text-left px-4 py-2">Nombre</th>
+          <th class="text-left px-4 py-2">Asistencia</th>
+          <th class="text-left px-4 py-2">Acompañantes</th>
+        </tr>
+      </thead>
+      <tbody>
         {
-            rows.map((row) => (
-                <li>
-                    <h2>{row.name}</h2>
-                </li>
-            ))
+          rows.map((guest) => (
+            <tr class="border-t border-gray-200 hover:bg-yellow-50 transition">
+              <td class="px-4 py-2 font-medium">{guest.name}</td>
+              <td class="px-4 py-2">
+                {
+                  guest.attendance === '1'
+                    ? <span class="text-green-600 font-semibold">✔ Confirmado</span>
+                    : <span class="text-gray-400">No confirmado</span>
+                }
+              </td>
+            </tr>
+          ))
         }
-    </ul>
+      </tbody>
+    </table>
+  </div>
 </div>
