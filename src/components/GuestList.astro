@@ -14,7 +14,7 @@ const { rows } = await turso.execute('SELECT * FROM Guests') as unknown as { row
         <tr>
           <th class="text-left px-4 py-2">Nombre</th>
           <th class="text-left px-4 py-2">Asistencia</th>
-          <th class="text-left px-4 py-2">Acompañantes</th>
+          <th class="text-left px-4 py-2">Link generado</th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +28,9 @@ const { rows } = await turso.execute('SELECT * FROM Guests') as unknown as { row
                     ? <span class="text-green-600 font-semibold">✔ Confirmado</span>
                     : <span class="text-gray-400">No confirmado</span>
                 }
+              </td>
+              <td class="px-4 py-2">
+                <a href={`/guest/${guest.token}`} class="text-blue-600 hover:underline">Link invitación</a> 
               </td>
             </tr>
           ))
