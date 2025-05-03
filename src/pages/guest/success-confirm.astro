@@ -1,5 +1,5 @@
 ---
-// src/pages/guest/successConfirm.astro
+import LocationDetails from "../../components/LocationDetails.astro";
 import Layout from "../../layouts/Layout.astro";
 ---
 
@@ -9,9 +9,7 @@ import Layout from "../../layouts/Layout.astro";
     <p class="text-gray-700 mb-8">
       Nos alegra mucho saber que contaremos contigo en este día tan especial. ¡Nos vemos en la boda!
     </p>
-    <p class="text-gray-700 font-medium">Detalles de la celebración:</p>
-    <p class="text-gray-600 pl-4"><strong>📅 Fecha:</strong> <span class="font-medium">Sábado, 6 de Septiembre de 2025</span></p>
-    <p class="text-gray-600 pl-4"><strong>🏠 Ubicación:</strong> <span class="font-medium">Villa Ramona. Sant Joan d'Alacant</span></p>
+    <LocationDetails />
     <div class="absolute inset-0 -z-10 overflow-hidden">
       <canvas id="confetti-canvas" class="w-full h-full"></canvas>
     </div>

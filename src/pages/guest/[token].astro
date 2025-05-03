@@ -1,4 +1,5 @@
 ---
+import LocationDetails from '../../components/LocationDetails.astro';
 import tokens from '../../data/tokens.json';
 import Layout from '../../layouts/Layout.astro';
 import { getGuestByToken } from '../../lib/fetch-guest';
@@ -21,9 +22,7 @@ if(guest?.attendance == '1') {
         <h1 class="handwritten text-2xl font-bold text-gray-800 mb-4">¡Hola, <span class="font-bold">{guest?.name ?? 'N/A'}</span>!</h1>
         <p class="text-gray-600 mb-4">Nos hace muy feliz invitarte a nuestro enlace. <br>Te esperamos el día de la boda 🎉</p>
 
-        <p class="text-gray-700 font-medium">Detalles de la celebración:</p>
-        <p class="text-gray-600 pl-4"><strong>📅 Fecha:</strong> <span class="font-medium">Sábado, 6 de Septiembre de 2025</span></p>
-        <p class="text-gray-600 pl-4"><strong>🏠 Ubicación:</strong> <span class="font-medium">Villa Ramona. Sant Joan d'Alacant</span></p>
+        <LocationDetails />
     
         <hr class="border-gray-300 my-4">
     
