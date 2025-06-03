@@ -3,10 +3,17 @@ import { turso } from "../lib/turso"
 import type { Guest } from "../types/types"
 
 const { rows } = await turso.execute('SELECT * FROM Guests') as unknown as { rows: Guest[] }
+const totalGuests = rows.length
+const confirmedGuests = rows.filter(guest => guest.attendance === '1').length
+const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
 ---
 
 <div class="container mx-auto p-6">
   <h1 class="text-2xl font-bold mb-6">Lista de invitados</h1>
+
+    <p class="mb-4 text-gray-600">✅ Invitados confirmados: {confirmedGuests}</p>
+    <p class="mb-4 text-gray-600">❌ Invitados que han rechazado: {declinedGuests}</p>
+    <p class="mb-4 text-gray-600">Invitados totales: {totalGuests}</p>
 
   <div class="overflow-x-auto bg-white shadow-xl rounded-xl">
     <table class="min-w-full table-auto">
