@@ -27,7 +27,7 @@ const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
       <tbody>
         {
           rows.map((guest) => (
-            <tr class="border-t border-gray-200 hover:bg-yellow-50 transition">
+            <tr class={`border-t border-gray-200 hover:bg-yellow-50 transition ${guest.attendance === '-1' ? 'bg-red-100' : ''}`}>
               <td class="px-4 py-2 font-medium">{guest.name}</td>
               <td class="px-4 py-2">
                 {
