@@ -15,7 +15,7 @@ export interface GuestExtraInfo {
 
 export type GuestWithExtraInfo = Guest & {
     guestId?: number;
-    mealPreference?: string;
+    meal_preference?: string;
     allergies?: string;
     notes?: string;
     participate?: boolean;

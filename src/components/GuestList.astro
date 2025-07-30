@@ -57,7 +57,7 @@ const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
               <td class="px-4 py-2">
                 <a href={`/guest/${guest.token}`} class="text-blue-600 hover:underline">Link invitación</a> 
               </td>
-              <td class="px-4 py-2 font-medium">{guest.mealPreference}</td>
+              <td class="px-4 py-2 font-medium">{guest.meal_preference?.replace("_", " ").replace(/\b\w/g, l => l.toUpperCase())}</td>
               <td class="px-4 py-2 font-medium">{guest.allergies}</td>
               <td class="px-4 py-2 font-medium">{guest.notes}</td>
               <td class="px-4 py-2 font-medium">{guest.participate ? 'Si 🎤' : 'No'}</td>
