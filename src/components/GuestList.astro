@@ -1,8 +1,22 @@
 ---
-import { turso } from "../lib/turso"
-import type { Guest } from "../types/types"
+import { turso } from "../lib/turso";
+import type { GuestWithExtraInfo } from "../types/types";
 
-const { rows } = await turso.execute('SELECT * FROM Guests') as unknown as { rows: Guest[] }
+const { rows } = await turso.execute({
+  sql: `
+    SELECT 
+      g.id,
+      g.name,
+      g.attendance,
+      g.token,
+      e.meal_preference,
+      e.allergies,
+      e.notes,
+      e.participate
+    FROM Guests g
+    LEFT JOIN GuestExtraInfo e ON g.id = e.guest_id;
+  `
+}) as unknown as { rows: GuestWithExtraInfo[] };
 const totalGuests = rows.length
 const confirmedGuests = rows.filter(guest => guest.attendance === '1').length
 const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
@@ -22,6 +36,10 @@ const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
           <th class="text-left px-4 py-2">Nombre</th>
           <th class="text-left px-4 py-2">Asistencia</th>
           <th class="text-left px-4 py-2">Link generado</th>
+          <th class="text-left px-4 py-2">Dieta especial</th>
+          <th class="text-left px-4 py-2">Alergias</th>
+          <th class="text-left px-4 py-2">Notas</th>
+          <th class="text-left px-4 py-2">Participación</th>
         </tr>
       </thead>
       <tbody>
@@ -39,6 +57,10 @@ const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
               <td class="px-4 py-2">
                 <a href={`/guest/${guest.token}`} class="text-blue-600 hover:underline">Link invitación</a> 
               </td>
+              <td class="px-4 py-2 font-medium">{guest.mealPreference}</td>
+              <td class="px-4 py-2 font-medium">{guest.allergies}</td>
+              <td class="px-4 py-2 font-medium">{guest.notes}</td>
+              <td class="px-4 py-2 font-medium">{guest.participate ? 'Si 🎤' : 'No'}</td>
             </tr>
           ))
         }

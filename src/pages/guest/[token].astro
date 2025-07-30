@@ -1,8 +1,11 @@
 ---
+import AttendanceForm from '../../components/AttendanceForm.astro';
 import LocationDetails from '../../components/LocationDetails.astro';
+import PreferencesForm from '../../components/PreferencesForm.astro';
 import tokens from '../../data/tokens.json';
 import Layout from '../../layouts/Layout.astro';
 import { getGuestByToken } from '../../lib/fetch-guest';
+import { getGuestPreferences } from '../../lib/fetch-guest-preferences';
 
 
 export function getStaticPaths() {
@@ -11,61 +14,39 @@ export function getStaticPaths() {
 
 const { token } = Astro.params;
 const guest = await getGuestByToken(token);
+const guestExtraInfo = guest?.id ? await getGuestPreferences(guest.id) : null;
 
-if(guest?.attendance == '1') {
-  return Astro.redirect("/guest/success-confirm");
+if(guest?.attendance && guestExtraInfo){
+    return Astro.redirect('/guest/success-confirm');
 }
 
 ---
 <Layout>
     <div class="bg-white rounded-2xl shadow-lg p-6 max-w-lg mx-auto mt-8">
+        {
+        guest?.attendance == '0' ? <>
         <h1 class="handwritten text-2xl font-bold text-gray-800 mb-4">¡Hola, <span class="font-bold">{guest?.name ?? 'N/A'}</span>!</h1>
         <p class="text-gray-600 mb-4">Nos hace muy feliz invitarte a nuestro enlace. <br>Te esperamos el día de la boda 🎉</p>
 
-        <LocationDetails />
+        {
+            guest?.id == '11' &&  <div class="flex items-center space-x-4">
+                                    <img
+                                    src="/Red.webp"
+                                    alt="Crewmate"
+                                    class="w-20 h-20 rounded-full border-4 border-yellow-500"
+                                    />
+                                    <div>
+                                    <h2 class="text-2xl font-bold text-red-500">Noah</h2>
+                                    <p class="text-sm text-gray-600">Rol: Miembro de la tripulación (?) 👀</p>
+                                    </div>
+                                </div>
+        }
     
         <hr class="border-gray-300 my-4">
-    
-        <p class="text-gray-600 mb-4">
-            Por favor, confirma tu asistencia a la boda haciendo click en el botón de abajo:
-            <br>
-            Si tienes alguna duda, no dudes en escribirnos!
-        </p>
-        <div class="flex justify-center">
-            <button id="confirmAssistanceBtn" data-guesttoken={guest?.token} class="bg-yellow-600 text-white font-semibold py-2 px-4 rounded hover:bg-yellow-700 transition">
-                Confirmar asistencia
-            </button>
-        </div>
+            <LocationDetails />
+          <AttendanceForm guest={guest} />
+          </> : <PreferencesForm guest={guest} />
+    }
     </div>
 </Layout>
-
-<script type="module">
-    document.addEventListener("DOMContentLoaded", () => {
-      const confirmBtn = document.getElementById("confirmAssistanceBtn");
-  
-      confirmBtn?.addEventListener("click", async () => {
-        const guestToken = confirmBtn.dataset.guesttoken;
-
-        try {
-            const res = await fetch("/api/confirm", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ guestToken }),
-            });
-
-            if (res.ok) {
-                window.location.href = "/guest/success-confirm";
-            } else {
-                alert("Hubo un error al confirmar la asistencia. Por favor, inténtalo más tarde o contacta con nosotros 😢");
-            }
-        } catch (err) {
-            console.error("Error en la solicitud: (Client layer)", err);
-            alert("Error de red. Intenta más tarde.");
-        }
-      });
-    });
-  </script>
-  
   

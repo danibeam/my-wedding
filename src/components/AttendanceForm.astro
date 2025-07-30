@@ -1,0 +1,44 @@
+---
+const { guest } = Astro.props;
+---
+<div>
+    <p class="text-gray-600 mb-4">
+        Por favor, confirma tu asistencia a la boda haciendo click en el botón de abajo:
+        <br>
+        Si tienes alguna duda, no dudes en escribirnos!
+    </p>
+    <div class="flex justify-center">
+        <button id="confirmAssistanceBtn" data-guesttoken={guest?.token} class="bg-yellow-600 text-white font-semibold py-2 px-4 rounded hover:bg-yellow-700 transition">
+            Confirmar asistencia
+        </button>
+    </div>
+</div>
+
+<script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      const confirmBtn = document.getElementById("confirmAssistanceBtn");
+  
+      confirmBtn?.addEventListener("click", async () => {
+        const guestToken = confirmBtn.dataset.guesttoken;
+
+        try {
+            const res = await fetch("/api/confirm", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ guestToken }),
+            });
+
+            if (res.ok) {
+                window.location.href = "/guest/success-confirm";
+            } else {
+                alert("Hubo un error al confirmar la asistencia. Por favor, inténtalo más tarde o contacta con nosotros 😢");
+            }
+        } catch (err) {
+            console.error("Error en la solicitud: (Client layer)", err);
+            alert("Error de red. Intenta más tarde.");
+        }
+      });
+    });
+  </script>

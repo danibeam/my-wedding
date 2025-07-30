@@ -5,3 +5,18 @@ export interface Guest {
     attendance: string; // '0' = not confirmed, '1' = confirmed, '-1' = declined
     token: string;
 }
+
+export interface GuestExtraInfo {
+    guestId: number;
+    mealPreference: string;
+    notes: string;
+    participate: boolean;
+}
+
+export type GuestWithExtraInfo = Guest & {
+    guestId?: number;
+    mealPreference?: string;
+    allergies?: string;
+    notes?: string;
+    participate?: boolean;
+};
