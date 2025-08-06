@@ -27,20 +27,6 @@ if(guest?.attendance && guestExtraInfo){
         guest?.attendance == '0' ? <>
         <h1 class="handwritten text-2xl font-bold text-gray-800 mb-4">¡Hola, <span class="font-bold">{guest?.name ?? 'N/A'}</span>!</h1>
         <p class="text-gray-600 mb-4">Nos hace muy feliz invitarte a nuestro enlace. <br>Te esperamos el día de la boda 🎉</p>
-
-        {
-            guest?.id == '11' &&  <div class="flex items-center space-x-4">
-                                    <img
-                                    src="/Red.webp"
-                                    alt="Crewmate"
-                                    class="w-20 h-20 rounded-full border-4 border-yellow-500"
-                                    />
-                                    <div>
-                                    <h2 class="text-2xl font-bold text-red-500">Noah</h2>
-                                    <p class="text-sm text-gray-600">Rol: Miembro de la tripulación (?) 👀</p>
-                                    </div>
-                                </div>
-        }
     
         <hr class="border-gray-300 my-4">
             <LocationDetails />

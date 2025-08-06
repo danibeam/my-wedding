@@ -1,11 +1,28 @@
 ---
 const { guest } = Astro.props;
+const isNoah = guest?.id === 11;
+const mainDishOptions = [
+  { value: "pollo",    label: "🍖 Pularda, mole almendrado y patatas al romero" },
+  { value: "pescado",  label: "🐟 Rodaballo, risotto verde y bimi" },
+  { value: "otro",     label: "Otro (vegetariano, vegano, sin gluten)" },
+];
+
+if (isNoah) {
+  mainDishOptions.push({
+    value: "noah",
+    label: "Comerme un tripulante (Noah es el impostor!!!! 👀)",
+  });
+}
 ---
 
-<div class="max-w-xl mx-auto bg-white ">
+<div class="max-w-xl mx-auto bg-white">
   <h2 class="text-2xl font-handwritten text-yellow-700 mb-4 text-center">
     ¡Gracias por confirmar, {guest.name || "invitado"}!
   </h2>
+  {
+    isNoah && <div class="flex items-center justify-center mb-4">
+      <img src="/public/Red.webp" alt="Noah el impostor" class="w-24 h-24" /></div>
+  }
   <p class="mb-6 text-gray-600 text-center">Nos gustaría conocer un poco más para cuidarte ese día 🥰
     <br>
     Si tienes alguna duda, no dudes en <strong>preguntarnos</strong>!
@@ -32,6 +49,17 @@ const { guest } = Astro.props;
       <label class="block mb-1 font-semibold text-gray-700">Otra dieta o indicación adicional:</label>
       <textarea name="notes" rows="2" class="w-full border rounded p-2"></textarea>
     </div>
+    <!-- Plato principal -->
+    <div>
+        <label class="block mb-1 font-semibold text-gray-700">¿Cuál es tu plato principal preferido?</label>
+        <select name="main_dish" class="w-full border rounded p-2">
+        <option value="">-- Selecciona una opción --</option>
+
+        {mainDishOptions.map(opt => (
+            <option value={opt.value}>{opt.label}</option>
+        ))}
+        </select>
+    </div>
     <!-- Participacion -->
     <div>
       <label class="block mb-1 font-semibold text-gray-700">¿Te gustaría ser parte de la ceremonia y dedicarnos unas palabras?</label>
@@ -40,6 +68,7 @@ const { guest } = Astro.props;
         <option value="1">Sí, Me encantaría! 🔥</option>
         <option value="0">No 🫢</option>
       </select>
+    </div>
     <button id="confirmPreferencesBtn" type="button" data-guestid={guest?.id} class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-semibold mt-2 py-2 px-4 rounded transition">
       Enviar respuestas
     </button>
@@ -54,16 +83,17 @@ const { guest } = Astro.props;
         const guestId = confirmBtn.dataset.guestid;
         const allergies = document.querySelector('input[name="allergies"]').value;
         const diet = document.querySelector('select[name="diet"]').value;
+        const mainDish = document.querySelector('select[name="main_dish"]').value;
         const notes = document.querySelector('textarea[name="notes"]').value;
         const participate = document.querySelector('select[name="participate"]').value === "1";
-
+debugger
         try {
             const res = await fetch("/api/preferences", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ guestId, allergies, diet, notes, participate }),
+                body: JSON.stringify({ guestId, allergies, diet, mainDish, notes, participate }),
             });
 
             if (res.ok) {

@@ -38,6 +38,7 @@ const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
           <th class="text-left px-4 py-2">Link generado</th>
           <th class="text-left px-4 py-2">Dieta especial</th>
           <th class="text-left px-4 py-2">Alergias</th>
+          <th class="text-left px-4 py-2">Principal</th>
           <th class="text-left px-4 py-2">Notas</th>
           <th class="text-left px-4 py-2">Participación</th>
         </tr>
@@ -59,6 +60,7 @@ const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
               </td>
               <td class="px-4 py-2 font-medium">{guest.meal_preference?.replace("_", " ").replace(/\b\w/g, l => l.toUpperCase())}</td>
               <td class="px-4 py-2 font-medium">{guest.allergies}</td>
+              <td class="px-4 py-2 font-medium">{guest.main_dish}</td>
               <td class="px-4 py-2 font-medium">{guest.notes}</td>
               <td class="px-4 py-2 font-medium">{guest.participate ? 'Si 🎤' : 'No'}</td>
             </tr>

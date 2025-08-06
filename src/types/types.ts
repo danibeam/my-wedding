@@ -17,6 +17,7 @@ export type GuestWithExtraInfo = Guest & {
     guestId?: number;
     meal_preference?: string;
     allergies?: string;
+    main_dish?: string;
     notes?: string;
     participate?: boolean;
 };
