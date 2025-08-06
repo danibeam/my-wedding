@@ -11,6 +11,7 @@ const { rows } = await turso.execute({
       g.token,
       e.meal_preference,
       e.allergies,
+      e.main_dish,
       e.notes,
       e.participate
     FROM Guests g
@@ -20,6 +21,7 @@ const { rows } = await turso.execute({
 const totalGuests = rows.length
 const confirmedGuests = rows.filter(guest => guest.attendance === '1').length
 const declinedGuests = rows.filter(guest => guest.attendance === '-1').length
+console.log(rows);
 ---
 
 <div class="container mx-auto p-6">
