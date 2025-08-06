@@ -4,9 +4,16 @@ export const prerender = false;
 
 export async function POST({ request }: { request: Request }) {
     try {
-        const { guestId, allergies, diet, notes, participate } =
+        const { guestId, allergies, diet, mainDish, notes, participate } =
             await request.json();
-        await sendPreferences(guestId, allergies, diet, notes, participate);
+        await sendPreferences(
+            guestId,
+            allergies,
+            diet,
+            mainDish,
+            notes,
+            participate
+        );
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
