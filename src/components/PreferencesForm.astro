@@ -78,6 +78,8 @@ if (isNoah) {
 <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
       const confirmBtn = document.getElementById("confirmPreferencesBtn");
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = "Enviando...";
   
       confirmBtn?.addEventListener("click", async () => {
         const guestId = confirmBtn.dataset.guestid;
@@ -86,7 +88,7 @@ if (isNoah) {
         const mainDish = document.querySelector('select[name="main_dish"]').value;
         const notes = document.querySelector('textarea[name="notes"]').value;
         const participate = document.querySelector('select[name="participate"]').value === "1";
-debugger
+
         try {
             const res = await fetch("/api/preferences", {
                 method: "POST",
