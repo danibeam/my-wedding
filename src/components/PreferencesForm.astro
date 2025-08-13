@@ -78,10 +78,10 @@ if (isNoah) {
 <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
       const confirmBtn = document.getElementById("confirmPreferencesBtn");
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = "Enviando...";
-  
+      
       confirmBtn?.addEventListener("click", async () => {
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Enviando...";
         const guestId = confirmBtn.dataset.guestid;
         const allergies = document.querySelector('input[name="allergies"]').value;
         const diet = document.querySelector('select[name="diet"]').value;
